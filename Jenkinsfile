@@ -10,7 +10,7 @@ pipeline {
         stage('SCM Checkout') {
             steps {
                 // Get some code from a GitHub repository
-             git 'https://github.com/LoksaiETA/BankingApp.git'
+             git 'https://github.com/Danishparvej/Wisecow-Application.git'
             }
 		   }
        stage("Docker build"){
@@ -36,7 +36,7 @@ pipeline {
         stage('Deploy to Kubernetes Dev Environment') {
             steps {
 		script {
-		sshPublisher(publishers: [sshPublisherDesc(configName: 'Deploy_Server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'kubectl apply -f kubernetesdeploy.yaml', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '.', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.yaml')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+		sshPublisher(publishers: [sshPublisherDesc(configName: 'Deploy_Server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'kubectl apply -f kubernetesdeployment.yaml', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '.', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.yaml')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
 	        }
         }
     	}
