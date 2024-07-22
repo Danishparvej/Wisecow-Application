@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wisecow-eta-deploy
+  labels:
+    app: wisecow-eta-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: wisecow-eta-app
+  template:
+    metadata:
+      labels:
+        app: wisecow-eta-app
+    spec:
+      containers:
+      - name: wisecow-eta-container
+        image: danish1998/wisecow-eta-app
+        ports:
+        - containerPort: 8086
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wisecow-eta-np-service
+  labels:
+    app: wisecow-eta-app
+spec:
+  selector:
+    app: wisecow-eta-app
+
+  type: NodePort
+  ports:
+  - nodePort: 31009   
+    port: 8086
+    targetPort: 8086
