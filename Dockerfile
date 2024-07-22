@@ -4,6 +4,8 @@ RUN apt-get update && apt-get install -y \
     bash \
     curl \
     wget \
+    fortune \
+    cowsay \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY wisecow.sh /app/wisecow.sh
