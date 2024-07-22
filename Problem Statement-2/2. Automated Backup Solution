@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Directories to backup
+SOURCE_DIRECTORIES=("/home/user/Documents" "/var/www/html" "/etc")
+
+# Backup destination directory
+BACKUP_DESTINATION="/backups"
+
+# Log file
+LOG_FILE="/var/log/backup.log"
+
+# Get current date and time for the backup name
+TIMESTAMP=$(date +"%Y%m%d%H%M%S")
+
+# Create a new backup directory with timestamp
+BACKUP_DIR="${BACKUP_DESTINATION}/backup_${TIMESTAMP}"
+mkdir -p "$BACKUP_DIR"
+
+# Function to perform the backup
+perform_backup() {
+    for DIRECTORY in "${SOURCE_DIRECTORIES[@]}"; do
+        if [ -d "$DIRECTORY" ]; then
+            DIR_NAME=$(basename "$DIRECTORY")
+            BACKUP_FILE="${BACKUP_DIR}/${DIR_NAME}_${TIMESTAMP}.tar.gz"
+            tar -czf "$BACKUP_FILE" -C "$DIRECTORY" .
+            if [ $? -eq 0 ]; then
+                echo "$(date) - Backup of $DIRECTORY succeeded." >> "$LOG_FILE"
+            else
+                echo "$(date) - Backup of $DIRECTORY failed." >> "$LOG_FILE"
+            fi
+        else
+            echo "$(date) - Directory $DIRECTORY does not exist." >> "$LOG_FILE"
+        fi
+    done
+}
+
+# Start the backup process
+echo "$(date) - Starting backup..." >> "$LOG_FILE"
+perform_backup
+echo "$(date) - Backup completed." >> "$LOG_FILE"
