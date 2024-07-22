@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     wget \
     && rm -rf /var/lib/apt/lists/*
-COPY wisecow.sh /usr/src/app/wisecow.sh
-WORKDIR /usr/src/app
+WORKDIR /app
+COPY wisecow.sh /app/wisecow.sh
 RUN chmod +x wisecow.sh
 CMD ["./wisecow.sh"]
